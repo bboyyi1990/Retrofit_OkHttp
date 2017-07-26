@@ -2,7 +2,10 @@ package com.Yi;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -28,6 +31,7 @@ public class HelloOkHttp {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().
                 url("http://www.imooc.com").build();
+
         try {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
@@ -137,18 +141,54 @@ public class HelloOkHttp {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     System.out.print(response.body().string());
                 }
             }
         });
-
     }
 
-    public static void main(String args[]) {
+    /**
+     * 缓存请求
+     *
+     * @throws IOException
+     */
+    public static void cacheOkHttp() throws IOException {
+        //缓存最大空间
+        int maxCacheSize = 10 * 1024 * 1024;
+        //构建缓存对象
+        Cache cache = new Cache(new File("/Users/apple/Desktop/CacheOkHttp"), maxCacheSize);
+        //构建 缓存请求业务
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().cache(cache).build();
+        //构建请求（请求的地址必须是支持缓存的）
+        Request request = new Request.Builder().
+                url("http://www.qq.com").
+//                cacheControl(new CacheControl.Builder().maxStale(365, TimeUnit.DAYS).build()).//设置缓存控制
+                build();
+
+        Response response = okHttpClient.newCall(request).execute();
+
+        String body = response.body().string();//
+        System.out.print("network response->" + response.networkResponse());
+        System.out.print("\ncache response->" + response.cacheResponse());
+
+        System.out.print("\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
+        /**
+         * 注：发送网络请求的时候一定要读取整个请求返回的内容 否则默认再次发送网络请求
+         * 因此两个String 类型的body 进行读取 触发缓存
+         */
+        Response response1 = okHttpClient.newCall(request).execute();
+        String body1 = response1.body().string();//
+        System.out.print("\nnetwork response->" + response1.networkResponse());
+        System.out.print("\ncache response->" + response1.cacheResponse());
+    }
+
+    public static void main(String args[]) throws Exception {
 //        sendReqeust();
 //        sendAsyncRequest("http://www.imooc.com");
 //        queryHttp();
-        postRequest();
+//        postRequest();
+        cacheOkHttp();
     }
 }

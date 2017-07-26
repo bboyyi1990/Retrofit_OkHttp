@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.gxz.PagerSlidingTabStrip;
+import com.yi.download.FileStorageManager;
+import com.yi.download.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     PagerSlidingTabStrip slidingTabStrip;
     private ViewPager pager;
 
@@ -21,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        File file = FileStorageManager.getInstance().getFileByName("傅翼");
+        Logger.e(TAG, "path -> " + file.getAbsolutePath());//获取创建的绝对路径
+
         pager = (ViewPager) findViewById(R.id.pager);
         slidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         ArrayList<String> list = new ArrayList<>();
