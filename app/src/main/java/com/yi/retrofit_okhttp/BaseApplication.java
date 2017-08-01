@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.yi.download.FileStorageManager;
 
+import http.HttpManager;
+
 /**
  * Created by Yi on 2017/7/26.
  */
@@ -15,5 +17,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         FileStorageManager.getInstance().init(this);
+        HttpManager.getInstance().init(this);
     }
 }

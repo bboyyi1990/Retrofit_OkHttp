@@ -52,6 +52,6 @@ public class FileStorageManager {
                 e.printStackTrace();
             }
         }
-        return root;
+        return file;
     }
 }

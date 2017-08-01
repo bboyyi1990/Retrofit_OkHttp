@@ -1,6 +1,7 @@
 package com.yi.retrofit_okhttp;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,7 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     PagerSlidingTabStrip slidingTabStrip;
     private ViewPager pager;
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        File file = FileStorageManager.getInstance().getFileByName("傅翼");
-        Logger.e(TAG, "path -> " + file.getAbsolutePath());//获取创建的绝对路径
+
+
 
         pager = (ViewPager) findViewById(R.id.pager);
         slidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
